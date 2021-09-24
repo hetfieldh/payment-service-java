@@ -3,41 +3,54 @@ package application;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
 import model.entities.Contract;
 import model.entities.Installment;
+import model.exceptions.DomainException;
 import model.services.ContractService;
 import model.services.PaypalService;
 
 public class Program {
 
-	public static void main(String[] args) throws ParseException {
-		Locale.setDefault(Locale.US);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Scanner sc = new Scanner(System.in);
+	public static void main(String[] args) {
 
-		System.out.println("Enter contract data");
-		System.out.print("Number: ");
-		String number = sc.nextLine();
-		System.out.print("Date (dd/MM/yyyy): ");
-		Date date = sdf.parse(sc.next());
-		System.out.print("Contract value: ");
-		Double totalValue = sc.nextDouble();
+		try (Scanner sc = new Scanner(System.in)) {
 
-		Contract contract = new Contract(number, date, totalValue);
+			Locale.setDefault(Locale.US);
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-		System.out.print("Enter number of installments: ");
-		Integer N = sc.nextInt();
+			System.out.println("Enter contract data");
+			System.out.print("Number: ");
+			String number = sc.nextLine();
+			System.out.print("Date (dd/MM/yyyy): ");
+			sdf.setLenient(false);
+			Date date = sdf.parse(sc.next());
+			System.out.print("Contract value: ");
+			Double totalValue = sc.nextDouble();
 
-		ContractService cs = new ContractService(new PaypalService());
-		cs.processSimpleInterestContract(contract, N);
+			Contract contract = new Contract(number, date, totalValue);
 
-		for (Installment it : contract.getInstallments()) {
-			System.out.println(it);
+			System.out.print("Enter number of installments: ");
+			Integer N = sc.nextInt();
+
+			ContractService cs = new ContractService(new PaypalService());
+			cs.processSimpleInterestContract(contract, N);
+
+			System.out.println();
+			System.out.println("INSTALLMENTS: ");
+			System.out.println("----------------------------------------------");
+			for (Installment it : contract.getInstallments()) {
+				System.out.println(it);
+			}
+		} catch (ParseException e) {
+			System.out.println("*** ERROR: Invalid date! " + e.getMessage());
+		} catch (InputMismatchException e) {
+			System.out.println("*** ERROR: Only numbers are accepted.");
+		} catch (DomainException e) {
+			System.out.println("*** CONTRACT ERROR: " + e.getMessage());
 		}
-
-		sc.close();
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import model.entities.Contract;
 import model.entities.Installment;
+import model.exceptions.DomainException;
 
 public class ContractService {
 
@@ -15,6 +16,10 @@ public class ContractService {
 	}
 
 	public void processSimpleInterestContract(Contract contract, Integer months) {
+		if (months <= 1) {
+			throw new DomainException("The number of installments must be greater than 1.");
+		}
+
 		Double basicQuota = contract.getTotalValue() / months;
 
 		for (int i = 1; i <= months; i++) {
