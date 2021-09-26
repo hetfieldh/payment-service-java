@@ -3,13 +3,8 @@ package model.services;
 public class simpleInterestService implements OnlinePaymentService {
 
 	// Simple interest
-	private static final Double PAYMENT_FEE = 0.02;
-	private static final Double INTEREST = 0.01;
-	private static final String NAME = "PayPal";
-
-	public static String getName() {
-		return NAME;
-	}
+	private static final Double PAYMENT_FEE = 0.00;
+	private static final Double INTEREST = 0.025;
 
 	@Override
 	public Double paymentFee(Double amount) {
@@ -18,6 +13,6 @@ public class simpleInterestService implements OnlinePaymentService {
 
 	@Override
 	public Double interest(Double amount, Integer months) {
-		return amount * months * INTEREST;
+		return amount * (1 + INTEREST * months);
 	}
 }

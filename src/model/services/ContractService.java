@@ -20,11 +20,10 @@ public class ContractService {
 			throw new DomainException("The number of installments must be greater than 1.");
 		}
 
-		Double basicQuota = contract.getTotalValue() / months;
+		Double quota = onlinePaymentService.interest(contract.getTotalValue(), months) / months;
 
 		for (int i = 1; i <= months; i++) {
-			Double updatedQuota = basicQuota + onlinePaymentService.interest(basicQuota, i);
-			Double fullQuota = updatedQuota + onlinePaymentService.paymentFee(updatedQuota);
+			Double fullQuota = quota + onlinePaymentService.paymentFee(quota);
 
 			Date dueDate = addMonths(contract.getDate(), i);
 
@@ -37,15 +36,15 @@ public class ContractService {
 			throw new DomainException("The number of installments must be greater than 1.");
 		}
 
-		Double fullquota = onlinePaymentService.paymentFee(onlinePaymentService.interest(contract.getTotalValue(), months));
+		Double quota = onlinePaymentService.interest(contract.getTotalValue(), months);
 
 		for (int i = 1; i <= months; i++) {
+			Double fullQuota = quota + onlinePaymentService.paymentFee(quota);
 
 			Date dueDate = addMonths(contract.getDate(), i);
 
-			contract.getInstallments().add(new Installment(dueDate, fullquota));
+			contract.getInstallments().add(new Installment(dueDate, fullQuota));
 		}
-
 	}
 
 	public Date addMonths(Date date, int M) {

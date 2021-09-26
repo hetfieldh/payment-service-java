@@ -1,10 +1,12 @@
 package model.entities;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Installment {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
 
 	private Date dueDate;
 	private Double amount;
@@ -27,6 +29,6 @@ public class Installment {
 
 	@Override
 	public String toString() {
-		return sdf.format(dueDate) + " - " + String.format("%.2f", amount);
+		return sdf.format(dueDate) + " - " + numberFormat.format(amount);
 	}
 }

@@ -1,5 +1,6 @@
 package application;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class Program {
 
 			Locale.setDefault(Locale.US);
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
 
 			System.out.println("Enter contract data");
 			System.out.print("Number: ");
@@ -49,7 +51,7 @@ public class Program {
 				cs.processSimpleInterestContract(contract, N);
 			} else if (opt == 2) {
 				ContractService cs = new ContractService(new compoundInterestService());
-				cs.processSimpleInterestContract(contract, N);
+				cs.processCompoundInterestContract(contract, N);
 			} else {
 				throw new DomainException("Invalid type of contract");
 			}
@@ -59,33 +61,33 @@ public class Program {
 			System.out.println("2 - GOOGLE PAY");
 			System.out.println("3 - SANTANDER");
 			System.out.println("4 - CITIBANK");
-			System.out.println("5 - BRADEsCO");
+			System.out.println("5 - BRADESCO");
 			System.out.print("Option: ");
 			int opt2 = sc.nextInt();
 
 			String bankName = "";
-			
+
 			switch (opt2) {
-				case 1: 
-					bankName = BankName.PAYPAL.getName();
-					break;
-				case 2:
-					bankName = BankName.GOOGLE_PAY.getName();
-					break;
-				case 3:
-					bankName = BankName.SANTANDER.getName();
-					break;
-				case 4: 
-					bankName = BankName.CITIBANK.getName();
-					break;
-				case 5:
-					bankName = BankName.BRADESCO.getName();
-					break;
-				default:
-					throw new DomainException("Invalid bank option...");
+			case 1:
+				bankName = BankName.PAYPAL.getName();
+				break;
+			case 2:
+				bankName = BankName.GOOGLE_PAY.getName();
+				break;
+			case 3:
+				bankName = BankName.SANTANDER.getName();
+				break;
+			case 4:
+				bankName = BankName.CITIBANK.getName();
+				break;
+			case 5:
+				bankName = BankName.BRADESCO.getName();
+				break;
+			default:
+				throw new DomainException("Invalid bank option...");
 			}
 
-			double fullValue = 0.0;
+			Double fullValue = 0.0;
 
 			System.out.println();
 			System.out.println("Bank Name: " + bankName);
@@ -101,22 +103,16 @@ public class Program {
 			System.out.println("----------------------------------------------");
 			System.out.println("SUMMARY: ");
 			System.out.println("----------------------------------------------");
-			System.out.println("Contracted value: " + String.format("%.2f", totalValue));
-			System.out.println("Interest and fee: " + String.format("%.2f", fullValue - totalValue));
-			System.out.println("Total amount to pay: " + String.format("%.2f", fullValue));
+			System.out.println("Contracted value: " + numberFormat.format(totalValue));
+			System.out.println("Interest and fee: " + numberFormat.format(fullValue - totalValue));
+			System.out.println("Total amount to pay: " + numberFormat.format(fullValue));
 
-		}catch(
-
-	ParseException e)
-	{
-		System.out.println("*** ERROR: Invalid date! " + e.getMessage());
-	}catch(
-	InputMismatchException e)
-	{
-		System.out.println("*** ERROR: Only numbers are accepted.");
-	}catch(
-	DomainException e)
-	{
-		System.out.println("*** CONTRACT ERROR: " + e.getMessage());
+		} catch (ParseException e) {
+			System.out.println("*** ERROR: Invalid date! " + e.getMessage());
+		} catch (InputMismatchException e) {
+			System.out.println("*** ERROR: Only numbers are accepted.");
+		} catch (DomainException e) {
+			System.out.println("*** CONTRACT ERROR: " + e.getMessage());
+		}
 	}
-}}
+}
