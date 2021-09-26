@@ -11,7 +11,7 @@ public class Contract {
 	private Date date;
 	private Double totalValue;
 
-	List<Installment> installments = new ArrayList<Installment>();
+	private List<Installment> installments = new ArrayList<Installment>();
 
 	public Contract() {
 	}

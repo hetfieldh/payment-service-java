@@ -1,7 +1,8 @@
 package model.services;
 
-public class PaypalService implements OnlinePaymentService {
+public class simpleInterestService implements OnlinePaymentService {
 
+	// Simple interest
 	private static final Double PAYMENT_FEE = 0.02;
 	private static final Double INTEREST = 0.01;
 	private static final String NAME = "PayPal";
