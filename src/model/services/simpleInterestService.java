@@ -3,16 +3,21 @@ package model.services;
 public class simpleInterestService implements OnlinePaymentService {
 
 	// Simple interest
-	private static final Double PAYMENT_FEE = 0.00;
-	private static final Double INTEREST = 0.025;
+	private Double paymentFee;
+	private Double interest;
+
+	public simpleInterestService(Double paymentFee, Double interest) {
+		this.paymentFee = paymentFee;
+		this.interest = interest;
+	}
 
 	@Override
 	public Double paymentFee(Double amount) {
-		return amount * PAYMENT_FEE;
+		return amount * paymentFee;
 	}
 
 	@Override
 	public Double interest(Double amount, Integer months) {
-		return amount * (1 + INTEREST * months);
+		return amount * (1 + interest * months);
 	}
 }

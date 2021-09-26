@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 import model.entities.Contract;
 import model.entities.Installment;
-import model.enums.BankName;
+import model.enums.Banks;
 import model.exceptions.DomainException;
 import model.services.ContractService;
 import model.services.compoundInterestService;
@@ -26,37 +26,10 @@ public class Program {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
 
-			System.out.println("Enter contract data");
-			System.out.print("Number: ");
-			String number = sc.nextLine();
-			System.out.print("Date (dd/MM/yyyy): ");
-			sdf.setLenient(false);
-			Date date = sdf.parse(sc.next());
-			System.out.print("Contract value: ");
-			Double totalValue = sc.nextDouble();
-
-			Contract contract = new Contract(number, date, totalValue);
-
-			System.out.print("Enter number of installments: ");
-			Integer N = sc.nextInt();
-
-			System.out.println("Select interest type:");
-			System.out.println("1 - Simple");
-			System.out.println("2 - Compound");
-			System.out.print("Option: ");
-			int opt = sc.nextInt();
-
-			if (opt == 1) {
-				ContractService cs = new ContractService(new simpleInterestService());
-				cs.processSimpleInterestContract(contract, N);
-			} else if (opt == 2) {
-				ContractService cs = new ContractService(new compoundInterestService());
-				cs.processCompoundInterestContract(contract, N);
-			} else {
-				throw new DomainException("Invalid type of contract");
-			}
-
-			System.out.println("Select a bank");
+			// PART 1 - CHOOSE A BANK
+			System.out.println("Welcome to the bank loan system");
+			System.out.println();
+			System.out.println("---> Choose a bank to generate loan:");
 			System.out.println("1 - PAYPAL");
 			System.out.println("2 - GOOGLE PAY");
 			System.out.println("3 - SANTANDER");
@@ -64,31 +37,85 @@ public class Program {
 			System.out.println("5 - BRADESCO");
 			System.out.print("Option: ");
 			int opt2 = sc.nextInt();
+			sc.nextLine();
 
-			String bankName = "";
+			String bankName;
+			Double fee, simpleInterest, compoundInterest;
 
 			switch (opt2) {
 			case 1:
-				bankName = BankName.PAYPAL.getName();
+				bankName = Banks.PAYPAL.getName();
+				fee = Banks.PAYPAL.getFee();
+				simpleInterest = Banks.PAYPAL.getSimpleInterest();
+				compoundInterest = Banks.PAYPAL.getCompoundInterest();
 				break;
 			case 2:
-				bankName = BankName.GOOGLE_PAY.getName();
+				bankName = Banks.GOOGLE_PAY.getName();
+				fee = Banks.GOOGLE_PAY.getFee();
+				simpleInterest = Banks.GOOGLE_PAY.getSimpleInterest();
+				compoundInterest = Banks.GOOGLE_PAY.getCompoundInterest();
 				break;
 			case 3:
-				bankName = BankName.SANTANDER.getName();
+				bankName = Banks.SANTANDER.getName();
+				fee = Banks.SANTANDER.getFee();
+				simpleInterest = Banks.SANTANDER.getSimpleInterest();
+				compoundInterest = Banks.SANTANDER.getCompoundInterest();
 				break;
 			case 4:
-				bankName = BankName.CITIBANK.getName();
+				bankName = Banks.CITIBANK.getName();
+				fee = Banks.CITIBANK.getFee();
+				simpleInterest = Banks.CITIBANK.getSimpleInterest();
+				compoundInterest = Banks.CITIBANK.getCompoundInterest();
 				break;
 			case 5:
-				bankName = BankName.BRADESCO.getName();
+				bankName = Banks.BRADESCO.getName();
+				fee = Banks.BRADESCO.getFee();
+				simpleInterest = Banks.BRADESCO.getSimpleInterest();
+				compoundInterest = Banks.BRADESCO.getCompoundInterest();
 				break;
 			default:
-				throw new DomainException("Invalid bank option...");
+				throw new DomainException("Invalid bank option... Try again!");
 			}
 
+			// PART 2 - CONTRACT DATA
+			System.out.println();
+			System.out.println("---> Enter contract data of: " + bankName);
+			System.out.print("Number: ");
+			String number = sc.nextLine();
+			System.out.print("Date (dd/MM/yyyy): ");
+			sdf.setLenient(false);
+			Date date = sdf.parse(sc.next());
+			System.out.print("Value: ");
+			Double totalValue = sc.nextDouble();
+
+			Contract contract = new Contract(number, date, totalValue);
+
+			// PART 3 - INSTALLMENTS
+			System.out.print("Number of installments: ");
+			Integer N = sc.nextInt();
+
+			// PART 4 - INTEREST TYPE
+			System.out.println();
+			System.out.println("---> Interest type:");
+			System.out.println("1 - Simple");
+			System.out.println("2 - Compound");
+			System.out.print("Option: ");
+			int opt = sc.nextInt();
+
+			if (opt == 1) {
+				ContractService cs = new ContractService(new simpleInterestService(fee, simpleInterest));
+				cs.processSimpleInterestContract(contract, N);
+			} else if (opt == 2) {
+				ContractService cs = new ContractService(new compoundInterestService(fee, compoundInterest));
+				cs.processCompoundInterestContract(contract, N);
+			} else {
+				throw new DomainException("Invalid type of contract");
+			}
+
+			// PART 5 - SUMMARY
 			Double fullValue = 0.0;
 
+			System.out.println();
 			System.out.println();
 			System.out.println("Bank Name: " + bankName);
 			System.out.println("Contract date: " + sdf.format(date));
