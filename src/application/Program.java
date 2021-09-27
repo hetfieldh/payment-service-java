@@ -92,11 +92,16 @@ public class Program {
 				confirm = sc.next().toUpperCase().charAt(0);
 				System.out.println();
 
+				if (confirm == 'Y' || confirm == 'N') {
+					System.out.println("Registered bank");
+				} else {
+					throw new DomainException("Invalid option... Try again!");
+				}
+
 			} while (confirm == 'N');
 
 			// PART 2 - CONTRACT DATA
 			sc.nextLine();
-			System.out.println();
 			System.out.println("---> Enter contract data of: " + bankName);
 			System.out.print("Number: ");
 			String number = sc.nextLine();
@@ -120,27 +125,33 @@ public class Program {
 			System.out.print("Option: ");
 			int opt = sc.nextInt();
 
-			if (opt == 1) {
-				ContractService cs = new ContractService(new simpleInterestService(fee, simpleInterest));
-				cs.processSimpleInterestContract(contract, N);
-			} else if (opt == 2) {
-				ContractService cs = new ContractService(new compoundInterestService(fee, compoundInterest));
-				cs.processCompoundInterestContract(contract, N);
-			} else {
+			String typeC = "";
+			switch (opt) {
+			case 1:
+				typeC = "Simple interest";
+				ContractService css = new ContractService(new simpleInterestService(fee, simpleInterest));
+				css.processSimpleInterestContract(contract, N);
+				break;
+			case 2:
+				typeC = "Compound interest";
+				ContractService csi = new ContractService(new compoundInterestService(fee, compoundInterest));
+				csi.processCompoundInterestContract(contract, N);
+				break;
+			default:
 				throw new DomainException("Invalid type of contract");
 			}
 
 			// PART 5 - SUMMARY
-			Double fullValue = 0.0;
-
 			System.out.println();
 			System.out.println();
 			System.out.println("Bank Name: " + bankName);
 			System.out.println("Contract date: " + sdf.format(date));
 			System.out.println("Contract number: " + number);
 			System.out.println("Installments: " + N);
+			System.out.println("Type of contract: " + typeC);
 			System.out.println("LIST OF INSTALLMENTS: ");
 			System.out.println("----------------------------------------------");
+			Double fullValue = 0.00;
 			for (Installment it : contract.getInstallments()) {
 				fullValue += it.getAmount();
 				System.out.println(it);

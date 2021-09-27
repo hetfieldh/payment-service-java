@@ -18,6 +18,7 @@ public class simpleInterestService implements OnlinePaymentService {
 
 	@Override
 	public Double interest(Double amount, Integer months) {
-		return amount * (1 + interest * months);
+		//M = C . (1 + i . t)
+		return amount * (1 + (interest * months));
 	}
 }

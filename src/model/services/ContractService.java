@@ -36,7 +36,7 @@ public class ContractService {
 			throw new DomainException("The number of installments must be greater than 1.");
 		}
 
-		Double quota = onlinePaymentService.interest(contract.getTotalValue(), months);
+		Double quota = onlinePaymentService.interest(contract.getTotalValue(), months) / months;
 
 		for (int i = 1; i <= months; i++) {
 			Double fullQuota = quota + onlinePaymentService.paymentFee(quota);

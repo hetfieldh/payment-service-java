@@ -18,6 +18,7 @@ public class compoundInterestService implements OnlinePaymentService {
 
 	@Override
 	public Double interest(Double amount, Integer months) {
-		return amount * (interest / (1 - Math.pow(1 + interest, -months)));
+		//M = P . (1 + i)^n
+		return amount * Math.pow((1 + interest), months);
 	}
 }

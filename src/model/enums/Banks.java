@@ -2,11 +2,11 @@ package model.enums;
 
 public enum Banks {
 	// PARAMETER ORDER: NAME, FEE, SIMPLE_INTEREST, COMPOUND_INTEREST
-	PAYPAL("Paypal", 0.02, 0.049, 0.030), 
-	GOOGLE_PAY("Google Pay", 0.02, 0.050, 0.033),
-	SANTANDER("Santander", 0.02, 0.055, 0.035), 
-	CITIBANK("CitiBank", 0.02, 0.051, 0.037),
-	BRADESCO("Bradesco", 0.02, 0.054, 0.040);
+	PAYPAL("Paypal", 0.020, 0.049, 0.030),
+	GOOGLE_PAY("Google Pay", 0.020, 0.050, 0.033),
+	SANTANDER("Santander", 0.020, 0.055, 0.035), 
+	CITIBANK("CitiBank", 0.020, 0.045, 0.040),
+	BRADESCO("Bradesco", 0.020, 0.054, 0.040);
 
 	private String name;
 	private Double fee;
@@ -35,5 +35,4 @@ public enum Banks {
 	public Double getCompoundInterest() {
 		return compoundInterest;
 	}
-
 }
