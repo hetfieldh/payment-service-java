@@ -29,55 +29,73 @@ public class Program {
 			// PART 1 - CHOOSE A BANK
 			System.out.println("Welcome to the bank loan system");
 			System.out.println();
-			System.out.println("---> Choose a bank to generate loan:");
-			System.out.println("1 - PAYPAL");
-			System.out.println("2 - GOOGLE PAY");
-			System.out.println("3 - SANTANDER");
-			System.out.println("4 - CITIBANK");
-			System.out.println("5 - BRADESCO");
-			System.out.print("Option: ");
-			int opt2 = sc.nextInt();
-			sc.nextLine();
 
+			char confirm;
 			String bankName;
 			Double fee, simpleInterest, compoundInterest;
 
-			switch (opt2) {
-			case 1:
-				bankName = Banks.PAYPAL.getName();
-				fee = Banks.PAYPAL.getFee();
-				simpleInterest = Banks.PAYPAL.getSimpleInterest();
-				compoundInterest = Banks.PAYPAL.getCompoundInterest();
-				break;
-			case 2:
-				bankName = Banks.GOOGLE_PAY.getName();
-				fee = Banks.GOOGLE_PAY.getFee();
-				simpleInterest = Banks.GOOGLE_PAY.getSimpleInterest();
-				compoundInterest = Banks.GOOGLE_PAY.getCompoundInterest();
-				break;
-			case 3:
-				bankName = Banks.SANTANDER.getName();
-				fee = Banks.SANTANDER.getFee();
-				simpleInterest = Banks.SANTANDER.getSimpleInterest();
-				compoundInterest = Banks.SANTANDER.getCompoundInterest();
-				break;
-			case 4:
-				bankName = Banks.CITIBANK.getName();
-				fee = Banks.CITIBANK.getFee();
-				simpleInterest = Banks.CITIBANK.getSimpleInterest();
-				compoundInterest = Banks.CITIBANK.getCompoundInterest();
-				break;
-			case 5:
-				bankName = Banks.BRADESCO.getName();
-				fee = Banks.BRADESCO.getFee();
-				simpleInterest = Banks.BRADESCO.getSimpleInterest();
-				compoundInterest = Banks.BRADESCO.getCompoundInterest();
-				break;
-			default:
-				throw new DomainException("Invalid bank option... Try again!");
-			}
+			do {
+
+				System.out.println("---> Choose a bank to generate loan:");
+				System.out.println("1 - PAYPAL");
+				System.out.println("2 - GOOGLE PAY");
+				System.out.println("3 - SANTANDER");
+				System.out.println("4 - CITIBANK");
+				System.out.println("5 - BRADESCO");
+				System.out.print("Option: ");
+				int opt2 = sc.nextInt();
+
+				switch (opt2) {
+				case 1:
+					bankName = Banks.PAYPAL.getName();
+					fee = Banks.PAYPAL.getFee();
+					simpleInterest = Banks.PAYPAL.getSimpleInterest();
+					compoundInterest = Banks.PAYPAL.getCompoundInterest();
+					break;
+				case 2:
+					bankName = Banks.GOOGLE_PAY.getName();
+					fee = Banks.GOOGLE_PAY.getFee();
+					simpleInterest = Banks.GOOGLE_PAY.getSimpleInterest();
+					compoundInterest = Banks.GOOGLE_PAY.getCompoundInterest();
+					break;
+				case 3:
+					bankName = Banks.SANTANDER.getName();
+					fee = Banks.SANTANDER.getFee();
+					simpleInterest = Banks.SANTANDER.getSimpleInterest();
+					compoundInterest = Banks.SANTANDER.getCompoundInterest();
+					break;
+				case 4:
+					bankName = Banks.CITIBANK.getName();
+					fee = Banks.CITIBANK.getFee();
+					simpleInterest = Banks.CITIBANK.getSimpleInterest();
+					compoundInterest = Banks.CITIBANK.getCompoundInterest();
+					break;
+				case 5:
+					bankName = Banks.BRADESCO.getName();
+					fee = Banks.BRADESCO.getFee();
+					simpleInterest = Banks.BRADESCO.getSimpleInterest();
+					compoundInterest = Banks.BRADESCO.getCompoundInterest();
+					break;
+				default:
+					throw new DomainException("Invalid bank option... Try again!");
+				}
+
+				System.out.println();
+				System.out.println("*** IMPORTANT ***");
+				System.out.println("---> Fee and interest information: " + String.format(bankName).toUpperCase());
+				System.out.println("Simple interest: " + String.format("%.2f", simpleInterest * 100) + "%");
+				System.out.println("Compound interest: " + String.format("%.2f", compoundInterest * 100) + "%");
+				System.out.println("Fee: " + String.format("%.2f", fee * 100) + "%");
+
+				System.out.println();
+				System.out.print("Continue with this bank (Y/N)? ");
+				confirm = sc.next().toUpperCase().charAt(0);
+				System.out.println();
+
+			} while (confirm == 'N');
 
 			// PART 2 - CONTRACT DATA
+			sc.nextLine();
 			System.out.println();
 			System.out.println("---> Enter contract data of: " + bankName);
 			System.out.print("Number: ");
